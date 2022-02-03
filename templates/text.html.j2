@@ -1,0 +1,35 @@
+<!DOCTYPE html >
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://lewisham.gov.uk/assets/static/favicon.ico" type="image/x-icon">
+    <title>London Borough of Culture dashboard for Lewisham</title>
+        
+    <style>
+        /* ... */
+    </style>  
+    <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.2/js/iframeResizer.contentWindow.min.js"></script>
+</head>
+<body>
+
+<ul>
+    <li>Number of events: {{NumEvents|thousands}}</li>
+    <li>Number of event attendees: {{NumEventAttendees|thousands}}</li>
+    <li>Volunteer hours: {{NumVolunteerHours|thousands}}</li>
+    <li>Young people benefiting from employment, learning and development opportunities: {{NumYoungBeneficiaries|thousands}}</li>
+    <li>Organisations involved: {{NumOrganisations|thousands}}</li>
+    <li>Schools involved: {{NumSchools|thousands}}</li>
+    <li>Number of social media / website interactions: {{NumOnlineInteractions|thousands}}</li>
+    <li>Joy and wellbeing: {{JoyWellbeing|percent}}%</li>
+    <li>Pride in Lewisham: {{PrideInLewisham|percent}}%</li>
+    <li>Lewisham perceived as welcoming: {{WelcomingPerception|percent}}%</li>
+    <li>Understanding of climate issues: {{ClimateUnderstanding|percent}}%</li>
+</ul>
+
+<p>Last updated on <span title="{{today|long_datetime}}">{{today|long_date}}</span>.</p>
+
+<!-- Spreadsheet version: {{Version}} -->
+
+</body>
+</html>

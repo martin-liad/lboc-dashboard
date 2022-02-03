@@ -1,18 +1,20 @@
 # This is a basic workflow to help you get started with Actions
 
-name: get lboc data
+name: Build the LBoC page with current data
 
 # Controls when the workflow will run
 on:
+  schedule:
+    - cron:  '6,26,46 * * * *'
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+    
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -23,29 +25,23 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - id: 'update_worksheet'
-        uses: jroehl/gsheet.action@v1.0.0 # you can specify '@release' to always have the latest changes
+      # Install dependencies
+      - name: Install Python Dependencies
+        run: pip install -r ./requirements.txt
+
+      # Build the page
+      - name: Build Github Pages
+        run: python ./make_page.py $SHEET_ID
+        env:
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+
+      # Push the result to the gh-pages branch
+      - name: Publish GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3.7.3
         with:
-          spreadsheetId: ${{ secrets.SHEET_ID }}
-          commands: | # list of commands, specified as a valid JSON string
-            [ 
-              { "command": "getData", "args": { "minCol": 1, "worksheetTitle": "lboc-dashboard" } }
-            ]
-        env:
-          GSHEET_CLIENT_EMAIL: ${{ secrets.GSHEET_CLIENT_EMAIL }}
-          GSHEET_PRIVATE_KEY: ${{ secrets.GSHEET_PRIVATE_KEY }}
-      - name: dump results
-        env:
-          #  the output of the action can be found in ${{ steps.update_worksheet.outputs.results }}
-          RESULTS: ${{ steps.update_worksheet.outputs.results }}
-        run: echo "$RESULTS" | jq . > data.json
-      - name: Commit and push if it changed
-        run: |-
-          git config user.name "Automated"
-          git config user.email "actions@users.noreply.github.com"
-          git add -A
-          timestamp=$(date -u)
-          git commit -m "Latest data: ${timestamp}" || exit 0
-          git push
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          publish_branch: gh-pages
