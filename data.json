@@ -1,0 +1,43 @@
+{
+  "results": [
+    {
+      "command": {
+        "func": "getData",
+        "kwargs": [
+          {
+            "minCol": 1,
+            "worksheetTitle": "lboc-dashboard"
+          },
+          null
+        ]
+      },
+      "result": {
+        "rawData": [
+          [
+            "visitors",
+            "events"
+          ],
+          [
+            "14",
+            "6"
+          ]
+        ],
+        "formatted": [
+          {
+            "(A)": "visitors",
+            "(B)": "events"
+          },
+          {
+            "(A)": "14",
+            "(B)": "6"
+          }
+        ],
+        "header": [
+          "(A)",
+          "(B)"
+        ],
+        "range": "'lboc-dashboard'!A1:Z1000"
+      }
+    }
+  ]
+}
